@@ -21,7 +21,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('You awaiting tasks'),
+        title: const Text('Your awaiting tasks'),
       ),
       body: ListView(
         children: _getListData(),
