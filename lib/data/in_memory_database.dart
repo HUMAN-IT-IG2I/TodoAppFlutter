@@ -22,7 +22,23 @@ class InMemoryDatabase {
     ),
   ];
 
+  bool addTask(String content) {
+    _tasks.add(Task(
+      _getLastUsedId() + 1,
+      content,
+      DateTime.now(),
+      true,
+    ));
+    return true;
+  }
+
   List<Task> getTasks() {
     return _tasks.where((task) => task.isActive).toList(growable: false);
+  }
+
+  int _getLastUsedId() {
+    List<int> ids = _tasks.map((task) => task.id).toList();
+    ids.sort();
+    return ids.last;
   }
 }

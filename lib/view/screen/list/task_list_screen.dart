@@ -19,6 +19,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isTaskCreated = ModalRoute.of(context)!.settings.arguments as bool?;
+
+    if (isTaskCreated != null && isTaskCreated) {
+      _viewModel.refreshTasks();
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your awaiting tasks'),
@@ -28,16 +34,12 @@ class _TaskListScreenState extends State<TaskListScreen> {
         padding: const EdgeInsets.only(top: 8.0),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _navigateToCreation,
+        onPressed: () {
+          _navigateToCreation();
+        },
         child: const Icon(Icons.add),
       ),
     );
-  }
-
-  @override
-  void didUpdateWidget(covariant TaskListScreen oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    _viewModel.refreshTasks();
   }
 
   @override
@@ -70,11 +72,9 @@ class _TaskListScreenState extends State<TaskListScreen> {
   }
 
   void _navigateToCreation() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("You clicked the + button !"),
-        duration: Duration(seconds: 5),
-      ),
+    Navigator.pushNamed(
+      context,
+      Application.creationDestination,
     );
   }
 
