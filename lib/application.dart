@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:todo_app_flutter/data/in_memory_database.dart';
 import 'package:todo_app_flutter/view/screen/create/task_creation_screen.dart';
+import 'package:todo_app_flutter/view/screen/details/task_details_screen.dart';
 import 'package:todo_app_flutter/view/screen/list/task_list_screen.dart';
 
 class Application extends StatelessWidget {
   static final InMemoryDatabase database = InMemoryDatabase();
 
   static String get creationDestination => '/creation';
+
+  static String get detailsDestination => '/details';
 
   static String get listDestination => '/';
 
@@ -20,6 +23,7 @@ class Application extends StatelessWidget {
       routes: {
         listDestination: (context) => const TaskListScreen(),
         creationDestination: (context) => const TaskCreationScreen(),
+        detailsDestination: (context) => const TaskDetailsScreen(),
       },
     );
   }

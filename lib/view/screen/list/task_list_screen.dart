@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:collection/collection.dart';
 import 'package:todo_app_flutter/data/model/task_entity.dart';
 import 'package:todo_app_flutter/view/screen/list/task_item.dart';
 import 'package:todo_app_flutter/view/screen/list/task_list_view_model.dart';
@@ -15,13 +16,13 @@ class TaskListScreen extends StatefulWidget {
 
 class _TaskListScreenState extends State<TaskListScreen> {
   late TaskListViewModel _viewModel;
-  final List<Task> _task = [];
+  List<Task> _tasks = [];
 
   @override
   Widget build(BuildContext context) {
-    final isTaskCreated = ModalRoute.of(context)!.settings.arguments as bool?;
+    final didTaskChange = ModalRoute.of(context)!.settings.arguments as bool?;
 
-    if (isTaskCreated != null && isTaskCreated) {
+    if (didTaskChange != null && didTaskChange) {
       _viewModel.refreshTasks();
     }
 
@@ -46,15 +47,19 @@ class _TaskListScreenState extends State<TaskListScreen> {
   void initState() {
     super.initState();
     _viewModel = TaskListViewModel();
+    _viewModel.refreshTasks();
     _viewModel.tasks.stream.listen((tasks) {
-      _task.clear();
-      _task.addAll(tasks);
+      if(!const ListEquality().equals(_tasks, tasks)){
+        setState(() {
+          _tasks = tasks;
+        });
+      }
     });
   }
 
   List<Widget> _getListData() {
     List<Widget> widgets = [];
-    for (Task task in Application.database.getTasks()) {
+    for (Task task in _tasks) {
       widgets.add(
         InkWell(
           child: Center(
@@ -79,11 +84,10 @@ class _TaskListScreenState extends State<TaskListScreen> {
   }
 
   void _navigateToDetails(Task task) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text("You clicked on the task n°${task.id}!"),
-        duration: const Duration(seconds: 5),
-      ),
+    Navigator.pushNamed(
+      context,
+      Application.detailsDestination,
+      arguments: task.id,
     );
   }
 }

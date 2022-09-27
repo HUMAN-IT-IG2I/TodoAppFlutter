@@ -1,4 +1,5 @@
 import 'package:todo_app_flutter/data/model/task_entity.dart';
+import 'package:collection/collection.dart';
 
 class InMemoryDatabase {
   final List<Task> _tasks = [
@@ -40,5 +41,19 @@ class InMemoryDatabase {
     List<int> ids = _tasks.map((task) => task.id).toList();
     ids.sort();
     return ids.last;
+  }
+
+  Task? getById(int taskId) => _tasks.singleWhereOrNull((task) => task.id == taskId);
+
+  void markAsDone(Task task) {
+    int position = _tasks.indexWhere((t) => t.id == task.id);
+    _tasks.replaceRange(position, position+1, [
+      Task(
+        task.id,
+        task.content,
+        task.creationDate,
+        false,
+      )
+    ]);
   }
 }
