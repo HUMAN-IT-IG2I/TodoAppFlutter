@@ -8,12 +8,12 @@ class TaskDetailsViewModel {
 
   Task? _task;
 
+  void markTaskAsDone() {
+    _database.markAsDone(_task!);
+  }
+
   Task? retrieveTask(int taskId) {
     _task = _database.getById(taskId);
     return _task;
-  }
-
-  void markTaskAsDone() {
-    _database.markAsDone(_task!);
   }
 }

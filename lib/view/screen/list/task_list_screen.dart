@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
+import 'package:flutter/material.dart';
 import 'package:todo_app_flutter/data/model/task_entity.dart';
 import 'package:todo_app_flutter/view/screen/list/task_item.dart';
 import 'package:todo_app_flutter/view/screen/list/task_list_view_model.dart';
@@ -49,7 +49,7 @@ class _TaskListScreenState extends State<TaskListScreen> {
     _viewModel = TaskListViewModel();
     _viewModel.refreshTasks();
     _viewModel.tasks.stream.listen((tasks) {
-      if(!const ListEquality().equals(_tasks, tasks)){
+      if (!const ListEquality().equals(_tasks, tasks)) {
         setState(() {
           _tasks = tasks;
         });
